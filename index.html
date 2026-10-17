@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#080808">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="apple-mobile-web-app-title" content="Jejak">
+<title>Jejak Harian</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/png" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="app">
+<main id="main">
+
+  <!-- MASUK -->
+  <section class="screen sub" id="s-masuk">
+    <div class="authbox">
+      <div class="logo">Jejak</div>
+      <h1 id="authTitle">Masuk</h1>
+      <p class="cs" id="authSub" style="margin-top:6px">Catatan harian, target, keuangan, dan bukumu tersimpan aman di akunmu sendiri.</p>
+      <div id="authNameWrap" hidden>
+        <label class="f" for="authName">Nama panggilan</label>
+        <input type="text" id="authName" autocomplete="nickname" placeholder="Nama yang tampil di Beranda">
+      </div>
+      <label class="f" for="authEmail">Email</label>
+      <input type="text" id="authEmail" inputmode="email" autocomplete="email" autocapitalize="none" placeholder="nama@email.com">
+      <label class="f" for="authPass">Kata sandi</label>
+      <input type="password" id="authPass" autocomplete="current-password" placeholder="Minimal 6 karakter" style="width:100%;border:1px solid transparent;background:var(--card2);border-radius:14px;padding:13px 14px">
+      <p class="msg" id="authMsg" role="alert"></p>
+      <button class="btn" id="authGo" style="margin-top:8px">Masuk</button>
+      <button class="linkbtn" id="authSwitch">Belum punya akun? Daftar</button>
+    </div>
+  </section>
+
+  <!-- BERANDA -->
+  <section class="screen" id="s-beranda" hidden>
+    <header class="top"><h1 id="hello">Halo</h1><button class="avatar" data-go="pengaturan" aria-label="Pengaturan">H</button></header>
+
+    <div class="card">
+      <h2 class="ct">Progres hari ini</h2>
+      <p class="cs" id="dateNow"></p>
+      <div class="split">
+        <div>
+          <div class="li"><svg viewBox="0 0 24 24" style="color:var(--green-t)"><circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="4"/></svg><div><span>Target hari ini</span><b id="goalN">0</b></div></div>
+          <div class="li"><svg viewBox="0 0 24 24" style="color:var(--mint)"><circle cx="12" cy="12" r="8.5"/><path d="M8 12.5l3 3 5-6"/></svg><div><span>Selesai</span><b id="doneN">0</b></div></div>
+          <div class="li"><svg viewBox="0 0 24 24" style="color:var(--lime)"><path d="M12 3c1 3.5 5 5.5 5 10a5 5 0 0 1-10 0c0-2 1-3.5 2.5-5 .3 1.5 1 2 1.5 2 0-3-1-4 1-7z"/></svg><div><span>Beruntun</span><b id="streakN">0 hari</b></div></div>
+        </div>
+        <div class="ring"><svg class="r" viewBox="0 0 160 160"><circle class="tr" cx="80" cy="80" r="68"/><circle class="pg" id="ringHome" cx="80" cy="80" r="68" stroke-linecap="round" stroke-dasharray="427.3" stroke-dashoffset="427.3"/></svg>
+          <div class="core"><b id="ringHomeTxt">0%</b><span>target</span></div></div>
+      </div>
+    </div>
+
+    <div class="grid2">
+      <div class="card"><div class="ico"><svg viewBox="0 0 24 24" style="color:var(--lime)"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></svg>Waktu belajar</div><p class="big" id="studyVal">0j 0m</p><div class="pbar"><i id="studyBar" style="width:0;background:var(--lime)"></i></div><p class="mini" style="margin-top:8px">Minggu ini</p></div>
+      <button class="card" data-go="keuangan"><div class="ico"><svg viewBox="0 0 24 24" style="color:var(--green-t)"><path d="M4 7.5A2.5 2.5 0 0 1 6.5 5H18v3"/><path d="M4 7.5V17a2 2 0 0 0 2 2h13a1 1 0 0 0 1-1V9a1 1 0 0 0-1-1H6.5A2.5 2.5 0 0 1 4 7.5z"/><circle cx="16" cy="13.5" r="1.1"/></svg>Saldo bulan ini</div><p class="big" id="saldoVal">Rp 0</p><div class="pbar"><i id="saldoBar" style="width:0;background:var(--green)"></i></div><p class="mini" id="saldoSub" style="margin-top:8px"></p></button>
+    </div>
+
+    <div class="card">
+      <h2 class="ct">Jejak minggu ini</h2>
+      <div class="week" id="week"></div>
+      <button class="btn" data-add="catat">Catat hari ini</button>
+    </div>
+
+    <div class="card">
+      <div class="head"><h2 class="ct">Target hari ini</h2><span class="count" id="todoCount">0 dari 0</span></div>
+      <div class="rows" id="todos"></div>
+    </div>
+    <button class="btn alt" data-go="target" style="margin-bottom:12px">Lihat semua target</button>
+
+    <div class="card cont" id="homeRead"></div>
+
+    <div class="card">
+      <h2 class="ct">Mood 7 hari</h2>
+      <p class="cs" id="moodSel"></p>
+      <div class="bars" id="barsMood"></div>
+    </div>
+    <button class="btn alt" data-go="riwayat">Lihat riwayat catatan</button>
+  </section>
+
+  <!-- TARGET -->
+  <section class="screen" id="s-target" hidden>
+    <header class="top"><h1>Target</h1><button class="avatar" data-go="pengaturan" aria-label="Pengaturan">H</button></header>
+    <div class="card">
+      <h2 class="ct">Progres minggu ini</h2>
+      <p class="cs">Senin sampai Minggu</p>
+      <div id="goalList" style="margin-top:6px"></div>
+    </div>
+    <button class="btn" id="toggleForm">+ Target baru</button>
+    <div class="card" id="formTarget" hidden style="margin-top:12px">
+      <label class="f" for="gName" style="margin-top:0">Nama target</label>
+      <input type="text" id="gName" placeholder="Contoh: Meditasi 10 menit">
+      <label class="f" for="gCat">Kategori</label>
+      <select id="gCat"><option>Kesehatan</option><option>Belajar</option><option>Kerja</option><option>Ibadah</option><option>Keuangan</option><option>Lainnya</option></select>
+      <label class="f" for="gFreq">Seberapa sering</label>
+      <select id="gFreq"><option value="7">Setiap hari</option><option value="5">5 kali seminggu</option><option value="3">3 kali seminggu</option><option value="1">Sekali seminggu</option></select>
+      <label class="f" for="gDue">Tenggat (boleh dikosongkan)</label>
+      <input type="date" id="gDue">
+      <button class="btn" id="saveTarget" style="margin-top:20px">Simpan target</button>
+    </div>
+  </section>
+
+  <!-- KEUANGAN -->
+  <section class="screen" id="s-keuangan" hidden>
+    <header class="top"><h1>Keuangan</h1><button class="avatar" data-go="pengaturan" aria-label="Pengaturan">H</button></header>
+    <div class="chips">
+      <button class="cb on" data-trx="masuk">+ Pemasukan</button>
+      <button class="cb" data-trx="keluar">+ Pengeluaran</button>
+    </div>
+    <div class="mnav">
+      <button class="back" id="prevM" aria-label="Bulan sebelumnya"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button>
+      <b id="monthLbl"></b>
+      <button class="back" id="nextM" aria-label="Bulan berikutnya"><svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg></button>
+    </div>
+
+    <div class="card">
+      <h2 class="ct">Arus kas bulan ini</h2>
+      <p class="cs">Pemasukan dikurangi pengeluaran</p>
+      <div class="split">
+        <div>
+          <div class="li"><svg viewBox="0 0 24 24" style="color:var(--green-t)"><path d="M12 5v14M6 13l6 6 6-6"/></svg><div><span>Pemasukan</span><b id="cfIn">Rp 0</b></div></div>
+          <div class="li"><svg viewBox="0 0 24 24" style="color:var(--coral)"><path d="M12 19V5M6 11l6-6 6 6"/></svg><div><span>Pengeluaran</span><b id="cfOut">Rp 0</b></div></div>
+          <div class="li"><svg viewBox="0 0 24 24" style="color:var(--mint)"><circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="4"/></svg><div><span>Anggaran</span><b id="cfBud">Belum diatur</b></div></div>
+        </div>
+        <div class="ring"><svg class="r" viewBox="0 0 160 160"><circle class="tr" cx="80" cy="80" r="68"/><circle class="pg" id="ringMoney" cx="80" cy="80" r="68" stroke-linecap="round" stroke-dasharray="427.3" stroke-dashoffset="427.3"/></svg>
+          <div class="core"><b id="ringMoneyTxt" style="font-size:21px">Rp 0</b><span>tersisa</span></div></div>
+      </div>
+    </div>
+
+    <div class="grid2">
+      <div class="card"><div class="ico"><svg viewBox="0 0 24 24" style="color:var(--green-t)"><circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="4"/></svg>Anggaran</div><p class="big" id="budVal">-</p><div class="pbar"><i id="budBar" style="width:0;background:var(--green)"></i></div><p class="mini" id="budSub" style="margin-top:8px"></p></div>
+      <div class="card"><div class="ico"><svg viewBox="0 0 24 24" style="color:var(--mint)"><path d="M12 4v16M5 11l7-7 7 7"/></svg>Tabungan</div><p class="big" id="savVal">-</p><div class="pbar"><i id="savBar" style="width:0;background:var(--mint)"></i></div><p class="mini" id="savSub" style="margin-top:8px"></p></div>
+    </div>
+
+    <div class="card">
+      <h2 class="ct">Sumber pemasukan</h2>
+      <p class="cs">Dari mana uangmu datang bulan ini</p>
+      <div id="srcList" style="margin-top:8px"></div>
+    </div>
+
+    <div class="card">
+      <h2 class="ct">Pengeluaran 7 hari</h2>
+      <p class="big" style="margin-top:10px" id="expSel"></p>
+      <p class="cs" id="expLbl"></p>
+      <div class="bars" id="barsExp"></div>
+    </div>
+
+    <div class="card">
+      <h2 class="ct">Pengeluaran per kategori</h2>
+      <div id="catList" style="margin-top:8px"></div>
+    </div>
+
+    <div class="card">
+      <h2 class="ct">Transaksi bulan ini</h2>
+      <p class="cs">Ketuk transaksi untuk menghapusnya</p>
+      <div id="trxList" style="margin-top:6px"></div>
+    </div>
+  </section>
+
+  <!-- LAPORAN -->
+  <section class="screen" id="s-laporan" hidden>
+    <header class="top"><h1>Laporan</h1><button class="avatar" data-go="pengaturan" aria-label="Pengaturan">H</button></header>
+    <div class="chips" id="tabs" role="tablist">
+      <button class="cb" role="tab" aria-selected="true" data-p="minggu">Mingguan</button>
+      <button class="cb" role="tab" aria-selected="false" data-p="bulan">Bulanan</button>
+      <button class="cb" role="tab" aria-selected="false" data-p="tahun">Tahunan</button>
+    </div>
+    <p class="summary" id="summary"></p>
+
+    <div class="card">
+      <h2 class="ct" id="moodTitle">Mood 7 hari terakhir</h2>
+      <p class="cs" id="repSel"></p>
+      <div class="bars" id="barsRep"></div>
+    </div>
+
+    <div class="card">
+      <h2 class="ct">Waktu per kategori</h2>
+      <div id="catStack"></div>
+    </div>
+
+    <div class="card">
+      <h2 class="ct">Konsistensi 12 minggu</h2>
+      <p class="cs">Makin terang, makin aktif</p>
+      <div class="heat" id="heat" role="img" aria-label="Kalender konsistensi 12 minggu terakhir"></div>
+    </div>
+
+    <div class="card">
+      <h2 class="ct">Pemasukan dan pengeluaran</h2>
+      <p class="cs" id="finSub"></p>
+      <div class="bars fin" id="barsFin"></div>
+      <div class="legend"><span><s style="background:var(--green)"></s>Pemasukan</span><span><s style="background:var(--coral)"></s>Pengeluaran</span></div>
+    </div>
+
+    <button class="btn alt" data-go="riwayat" style="margin-bottom:10px">Lihat riwayat catatan</button>
+    <button class="btn" id="exportPdf">Cetak atau simpan laporan sebagai PDF</button>
+  </section>
+
+  <!-- BUKU -->
+  <section class="screen" id="s-buku" hidden>
+    <header class="top"><h1>Buku</h1><button class="avatar" data-go="pengaturan" aria-label="Pengaturan">H</button></header>
+    <div class="card cont" id="lastCard"></div>
+
+    <div class="grid2">
+      <div class="card"><div class="ico"><svg viewBox="0 0 24 24" style="color:var(--green-t)"><circle cx="12" cy="12" r="8.5"/><path d="M8 12.5l3 3 5-6"/></svg>Selesai dibaca</div><p class="big" id="stDone">0</p></div>
+      <div class="card"><div class="ico"><svg viewBox="0 0 24 24" style="color:var(--mint)"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></svg>Sedang dibaca</div><p class="big" id="stNow">0</p></div>
+    </div>
+
+    <div class="card">
+      <h2 class="ct">Halaman dibaca 7 hari</h2>
+      <p class="big" style="margin-top:10px" id="readSel"></p>
+      <p class="cs" id="readLbl"></p>
+      <div class="bars" id="barsRead"></div>
+    </div>
+
+    <button class="btn" id="uploadBtn">+ Unggah e-book</button>
+    <input type="file" id="file" accept=".pdf,.epub,application/pdf,application/epub+zip" multiple hidden>
+    <p class="cs" style="text-align:center;margin:8px 0 18px">Format PDF dan EPUB</p>
+
+    <div class="chips" id="bookFilters">
+      <button class="cb" aria-pressed="true" data-bf="semua">Semua</button>
+      <button class="cb" aria-pressed="false" data-bf="baca">Sedang dibaca</button>
+      <button class="cb" aria-pressed="false" data-bf="selesai">Selesai</button>
+      <button class="cb" aria-pressed="false" data-bf="baru">Belum dibaca</button>
+    </div>
+    <div class="card" id="bookList" style="padding:4px 16px"></div>
+    <p class="empty" id="noBook" hidden>Belum ada buku di kategori ini.</p>
+  </section>
+
+  <!-- BACA -->
+  <section class="screen sub reader" id="s-baca" hidden>
+    <header class="subhead"><button class="back" data-back aria-label="Kembali"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button><h1 id="rdTitle">Judul buku</h1><span></span></header>
+    <p class="cs" id="rdAuthor" style="text-align:center;margin:-10px 0 14px"></p>
+    <div class="chips" style="justify-content:center">
+      <button class="cb" id="fontBtn">Ukuran</button>
+      <button class="cb" id="nightBtn" aria-pressed="true">Mode malam</button>
+      <button class="cb dangerbtn" id="delBook">Hapus buku</button>
+    </div>
+    <p class="rdstatus" id="rdStatus" role="status"></p>
+    <div id="pdfWrap" hidden><canvas id="pdfCanvas"></canvas></div>
+    <div id="epubWrap" hidden></div>
+    <div class="rdnav">
+      <button class="back" id="prevP" aria-label="Halaman sebelumnya"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button>
+      <div><input type="range" id="slider" min="1" max="1" value="1" aria-label="Pilih halaman"><small id="rdPos" style="display:block;text-align:center;color:var(--muted);font-size:13px"></small></div>
+      <button class="back" id="nextP" aria-label="Halaman berikutnya"><svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg></button>
+    </div>
+  </section>
+
+  <!-- CATAT -->
+  <section class="screen sub" id="s-catat" hidden>
+    <header class="subhead"><button class="back" data-back aria-label="Kembali"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button><h1>Catatan harian</h1><span></span></header>
+    <label class="f" for="cDate" style="margin-top:0">Tanggal</label>
+    <input type="date" id="cDate">
+
+    <label class="f">Bagaimana perasaanmu hari ini?</label>
+    <div class="moods" id="moods">
+      <button class="mood" aria-pressed="false"><span class="e">😞</span>Sulit</button>
+      <button class="mood" aria-pressed="false"><span class="e">😕</span>Kurang</button>
+      <button class="mood" aria-pressed="false"><span class="e">😐</span>Biasa</button>
+      <button class="mood" aria-pressed="false"><span class="e">🙂</span>Baik</button>
+      <button class="mood" aria-pressed="false"><span class="e">😄</span>Hebat</button>
+    </div>
+
+    <label class="f">Kegiatan hari ini</label>
+    <div class="card" style="padding:6px 16px 16px">
+      <div id="actList"></div>
+      <div class="mini-form">
+        <input type="text" id="aName" class="wide" placeholder="Nama kegiatan" aria-label="Nama kegiatan">
+        <input type="time" id="aTime" aria-label="Jam" style="width:100%;border:1px solid transparent;background:var(--card2);border-radius:14px;padding:11px 12px">
+        <input type="number" id="aMin" min="0" inputmode="numeric" placeholder="Durasi (menit)" aria-label="Durasi dalam menit" style="width:100%;border:1px solid transparent;background:var(--card2);border-radius:14px;padding:11px 12px">
+        <select id="aCat" class="wide" aria-label="Kategori kegiatan"></select>
+      </div>
+      <button class="add" id="aAdd">+ Tambah kegiatan</button>
+    </div>
+
+    <label class="f" for="cSyukur">Hal yang saya syukuri</label>
+    <textarea id="cSyukur" placeholder="Satu atau dua hal kecil sudah cukup"></textarea>
+    <label class="f" for="cLesson">Pelajaran hari ini</label>
+    <textarea id="cLesson" placeholder="Apa yang kamu pelajari hari ini?"></textarea>
+    <label class="f" for="cPlan">Rencana besok</label>
+    <textarea id="cPlan" placeholder="Tiga hal yang ingin kamu selesaikan"></textarea>
+    <div class="savebar"><button class="btn" id="saveEntry">Simpan catatan</button></div>
+  </section>
+
+  <!-- TRANSAKSI -->
+  <section class="screen sub" id="s-transaksi" hidden>
+    <header class="subhead"><button class="back" data-back aria-label="Kembali"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button><h1>Tambah transaksi</h1><span></span></header>
+    <div class="chips" id="trxType" style="justify-content:center">
+      <button class="cb" data-t="keluar" aria-pressed="true">Pengeluaran</button>
+      <button class="cb" data-t="masuk" aria-pressed="false">Pemasukan</button>
+    </div>
+    <div class="amount"><span>Rp</span><input type="text" id="amt" inputmode="numeric" placeholder="0" aria-label="Jumlah uang"></div>
+
+    <label class="f" id="catLabel">Kategori pengeluaran</label>
+    <div class="wrapchips" id="catChips"></div>
+    <label class="f" for="wal" id="walLabel">Dibayar dari</label>
+    <select id="wal"></select>
+    <label class="f" for="tgl">Tanggal</label>
+    <input type="date" id="tgl">
+    <label class="f" for="tnote">Catatan (boleh dikosongkan)</label>
+    <input type="text" id="tnote" placeholder="Contoh: makan siang bersama tim">
+    <div class="savebar"><button class="btn" id="saveTrx">Simpan pengeluaran</button></div>
+  </section>
+
+  <!-- RIWAYAT -->
+  <section class="screen sub" id="s-riwayat" hidden>
+    <header class="subhead"><button class="back" data-back aria-label="Kembali"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button><h1>Riwayat catatan</h1><span></span></header>
+    <input type="search" id="q" placeholder="Cari di catatan" aria-label="Cari catatan">
+    <div class="chips" id="filters" style="margin-top:12px">
+      <button class="cb" aria-pressed="true" data-f="semua">Semua</button>
+      <button class="cb" aria-pressed="false" data-f="baik">Mood baik</button>
+      <button class="cb" aria-pressed="false" data-f="Belajar">Belajar</button>
+      <button class="cb" aria-pressed="false" data-f="Olahraga">Olahraga</button>
+      <button class="cb" aria-pressed="false" data-f="Kerja">Kerja</button>
+    </div>
+    <div class="card" id="hist" style="padding:4px 16px"></div>
+    <p class="empty" id="noHist" hidden></p>
+  </section>
+
+  <!-- PENGATURAN -->
+  <section class="screen sub" id="s-pengaturan" hidden>
+    <header class="subhead"><button class="back" data-back aria-label="Kembali"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button><h1>Pengaturan</h1><span></span></header>
+    <div class="card">
+      <label class="f" for="setName" style="margin-top:0">Nama panggilan</label>
+      <input type="text" id="setName">
+      <label class="f" for="setEmail">Email</label>
+      <input type="text" id="setEmail" readonly>
+      <label class="f" for="setBud">Anggaran pengeluaran per bulan (Rp)</label>
+      <input type="text" id="setBud" inputmode="numeric" placeholder="0">
+      <label class="f" for="setSav">Target tabungan (Rp)</label>
+      <input type="text" id="setSav" inputmode="numeric" placeholder="0">
+      <p class="hint">Tabungan dihitung dari pengeluaran berkategori Tabungan.</p>
+      <button class="btn" id="saveSettings" style="margin-top:18px">Simpan pengaturan</button>
+    </div>
+    <div class="card">
+      <h2 class="ct">Data</h2>
+      <p class="cs" style="margin-bottom:12px">Datamu tersimpan online di akun Supabase milikmu. Unduh salinan cadangan kapan saja.</p>
+      <button class="btn alt" id="exportJson">Unduh cadangan data (JSON)</button>
+    </div>
+    <button class="btn alt dangerbtn" id="logout">Keluar</button>
+  </section>
+</main>
+
+<nav class="nav" id="nav" aria-label="Menu utama" hidden>
+  <button data-go="beranda" aria-label="Beranda" aria-current="page"><svg viewBox="0 0 24 24"><path d="M4 11l8-7 8 7v9h-5v-6H9v6H4z"/></svg></button>
+  <button data-go="buku" aria-label="Buku" aria-current="false"><svg viewBox="0 0 24 24"><path d="M5 4.5A1.5 1.5 0 0 1 6.5 3H19v15H6.5A1.5 1.5 0 0 0 5 19.5z"/><path d="M5 19.5A1.5 1.5 0 0 0 6.5 21H19v-3"/></svg></button>
+  <button class="plus" id="plus" aria-label="Tambah baru" aria-haspopup="dialog"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></button>
+  <button data-go="keuangan" aria-label="Keuangan" aria-current="false"><svg viewBox="0 0 24 24"><path d="M4 7.5A2.5 2.5 0 0 1 6.5 5H18v3"/><path d="M4 7.5V17a2 2 0 0 0 2 2h13a1 1 0 0 0 1-1V9a1 1 0 0 0-1-1H6.5A2.5 2.5 0 0 1 4 7.5z"/><circle cx="16" cy="13.5" r="1.1"/></svg></button>
+  <button data-go="laporan" aria-label="Laporan" aria-current="false"><svg viewBox="0 0 24 24"><path d="M5 20V10M12 20V4M19 20v-7"/></svg></button>
+</nav>
+
+<div class="scrim" id="scrim" hidden></div>
+<div class="sheet" id="sheet" role="dialog" aria-label="Tambah baru" hidden>
+  <div class="grab"></div>
+  <h2>Tambah baru</h2>
+  <button class="opt" data-add="catat"><span class="oi"><svg viewBox="0 0 24 24" style="color:var(--green-t)"><path d="M4 20l4-1 11-11-3-3L5 16z"/></svg></span><span><b>Catatan harian</b><small>Kegiatan, mood, dan pelajaran hari ini</small></span></button>
+  <button class="opt" data-add="masuk"><span class="oi"><svg viewBox="0 0 24 24" style="color:var(--green-t)"><path d="M12 5v14M6 13l6 6 6-6"/></svg></span><span><b>Pemasukan</b><small>Gaji, usaha, dan sumber lainnya</small></span></button>
+  <button class="opt" data-add="keluar"><span class="oi"><svg viewBox="0 0 24 24" style="color:var(--coral)"><path d="M12 19V5M6 11l6-6 6 6"/></svg></span><span><b>Pengeluaran</b><small>Makan, tagihan, belanja, dan lainnya</small></span></button>
+  <button class="opt" data-add="buku"><span class="oi"><svg viewBox="0 0 24 24" style="color:var(--mint)"><path d="M5 4.5A1.5 1.5 0 0 1 6.5 3H19v15H6.5A1.5 1.5 0 0 0 5 19.5z"/><path d="M5 19.5A1.5 1.5 0 0 0 6.5 21H19v-3"/></svg></span><span><b>Unggah e-book</b><small>PDF atau EPUB dari perangkatmu</small></span></button>
+</div>
+<div class="toast" id="toast" role="status"></div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="config.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

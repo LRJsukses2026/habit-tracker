@@ -1,8 +1,8 @@
 // Pengaturan aplikasi Jejak Harian.
 // Isi dua baris pertama setelah project Supabase dibuat (lihat PANDUAN.md).
 window.JEJAK_CONFIG = {
-  SUPABASE_URL: 'ISI_URL_PROJECT_SUPABASE',
-  SUPABASE_ANON_KEY: 'ISI_KUNCI_PUBLIK_SUPABASE',
+  SUPABASE_URL: 'https://qiqgxwyfefwolubatmjq.supabase.co',
+  SUPABASE_ANON_KEY: 'sb_publishable_vXglOmoh5YzH87zD9lCb3Q_aA3m-GG4',
 
   // Boleh diubah sesuai kebutuhan
   INCOME_SOURCES: ['Gaji', 'Usaha', 'Freelance', 'Investasi', 'Lainnya'],

@@ -2,7 +2,7 @@
 // Isi dua baris pertama setelah project Supabase dibuat (lihat PANDUAN.md).
 window.JEJAK_CONFIG = {
   SUPABASE_URL: 'https://qiqgxwyfefwolubatmjq.supabase.co',
-  SUPABASE_ANON_KEY: 'sb_publishable_vXglOmoh5YzH87zD9lCb3Q_aA3m-GG4',
+  SUPABASE_ANON_KEY: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFpcWd4d3lmZWZ3b2x1YmF0bWpxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTIyMTQxMTksImV4cCI6MjEwNzc5MDExOX0.W8YjdVQ0TMSDYY8QxAwyFVgR0SUhW0hH1qAlvYawp6o',
 
   // Boleh diubah sesuai kebutuhan
   INCOME_SOURCES: ['Gaji', 'Usaha', 'Freelance', 'Investasi', 'Lainnya'],
